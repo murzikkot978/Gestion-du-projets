@@ -1,5 +1,10 @@
 <?php
 
+$categories = get_terms([
+    'taxonomy'   => 'categorie',
+    'hide_empty' => false,
+]);
+
 get_header();
 
 if (have_posts()) :
@@ -12,21 +17,25 @@ if (have_posts()) :
                     </div>
                 <?php endif; ?>
 
-                <div class="p-8 w-full flex flex-col justify-center">
-                    <p class="text-3xl font-bold"><?= get_the_title(); ?></p>
-                    <p>Date : <?= get_field('date_de_realisation'); ?></p>
-                    
-                    <?php if ($cat = get_field('categorie_du_projet')) : ?>
-                        <p>Catégorie : <span><?= esc_html($cat); ?></span></p>
-                    <?php endif; ?>
+                <div class="px-8 w-full flex flex-col items-center">
 
+                    <a href="<?= esc_url(get_field('lien_projet')); ?>" target="_blank">
+                        <p class="text-[30px] font-bold mb-4 text-primary hover:underline"><?= get_the_title(); ?></p>
+                    </a>
+
+                    <div class="flex min:gap-[25px] w-full justify-around items-center mb-8">
+                        <?php foreach ($categories as $category) : ?>
+                            <?php if ($category->term_id === get_field('categorie_du_projet')) : ?>
+                                <p>Catégorie : <span><?= $category->name ?></span></p>
+                                <?php break; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+
+                        <p>Date : <?= get_field('date_de_realisation'); ?></p>
+                    </div>
+                    
                     <p><?= get_field('description_du_projet'); ?></p>
 
-                    <?php if ($lien = get_field('lien_projet')) : ?>
-                        <a href="<?= esc_url($lien); ?>" target="_blank" class=" bg-primary text-white rounded-full">
-                            Voir le projet
-                        </a>
-                    <?php endif; ?>
                 </div>
             </div>
         </main>
