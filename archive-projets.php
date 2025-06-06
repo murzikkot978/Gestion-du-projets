@@ -19,16 +19,25 @@ $projets = new WP_Query([
         <?php if ($projets->have_posts()) : ?>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php while ($projets->have_posts()) : $projets->the_post(); ?>
-                    <a href="<?= esc_url(get_permalink()) ?>" class="flex flex-col justify-center items-center border rounded-xl">
-                        <?php if ($img = get_field('image_projet')) : ?>
-                            <img src="<?= esc_url($img); ?>" alt="" class="mb-4 rounded-t-lg object-cover">
-                        <?php endif; ?>
-                        <p class="text-sm text-gray-500 mb-2">
-                            Date : <?= get_field('date_de_realisation'); ?>
-                        </p>
-                        <p class="text-gray-700 text-base">
-                            <?= get_field('description_du_projet'); ?>
-                        </p>
+                    <a href="<?= esc_url(get_permalink()) ?>" class="flex flex-col items-center border rounded-xl">
+                        <div class="relative">
+
+                            <?php if ($cat = get_field('categorie_du_projet')) : ?>
+                                <p class="absolute text-white bg-primary rounded-xl px-8"><span><?= esc_html($cat); ?></span></p>
+                            <?php endif; ?>
+
+                            <?php if ($img = get_field('image_projet')) : ?>
+                                <img src="<?= esc_url($img); ?>" alt="" class="mb-4 rounded-t-lg object-cover">
+                            <?php endif; ?>
+
+                            <p class="text-sm text-gray-500 mb-2 px-8">
+                                Date : <?= get_field('date_de_realisation'); ?>
+                            </p>
+                            <p class="text-gray-700 text-base px-8">
+                                <?= get_field('description_du_projet'); ?>
+                            </p>
+
+                        </div>
                     </a>
                 <?php endwhile; ?>
             </div>
